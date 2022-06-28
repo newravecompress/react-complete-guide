@@ -1,18 +1,22 @@
 import './App.css'
 import Expenses from './components/Expenses/Expenses'
 import NewExpense from './components/NewExpense/NewExpense'
+import { useState } from 'react'
 
-function App () {
-  const expenses = [
-    { title: 'Car Insurance1', amount: 294.67, date: new Date(2021, 2, 28) },
-    { title: 'Toilet paper', amount: 6.67, date: new Date(2021, 2, 28) },
-    { title: 'Food', amount: 51.67, date: new Date(2021, 2, 28) },
-    { title: 'Bike repair', amount: 64.6, date: new Date(2021, 2, 28) },
-  ]
+const DUMMY_EXPENSES = [
+  { title: 'Car Insurance1', amount: 294.67, date: new Date(2022, 2, 28) },
+  { title: 'Toilet paper', amount: 6.67, date: new Date(2020, 2, 28) },
+  { title: 'Food', amount: 51.67, date: new Date(2019, 2, 28) },
+  { title: 'Bike repair', amount: 64.6, date: new Date(2019, 2, 28) },
+]
+
+export default function App () {
+  const [expenses, setExpenses] = useState(DUMMY_EXPENSES)
 
   const addExpenseHandler = expense => {
-    console.log('In App.js')
-    console.log(expense)
+    setExpenses(prevState => {
+      return [expense, ...prevState]
+    })
   }
 
   return (
@@ -22,5 +26,3 @@ function App () {
     </div>
   )
 }
-
-export default App
