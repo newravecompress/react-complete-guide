@@ -4,7 +4,7 @@ import NewExpense from './components/NewExpense/NewExpense'
 import { useState } from 'react'
 
 const DUMMY_EXPENSES = [
-  { title: 'Car Insurance1', amount: 294.67, date: new Date(2022, 2, 28) },
+  { title: 'Car Insurance1', amount: 94.67, date: new Date(2022, 2, 28) },
   { title: 'Toilet paper', amount: 6.67, date: new Date(2020, 2, 28) },
   { title: 'Food', amount: 51.67, date: new Date(2019, 2, 28) },
   { title: 'Bike repair', amount: 64.6, date: new Date(2019, 2, 28) },
