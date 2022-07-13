@@ -1,18 +1,22 @@
 import Card from '../UI/Card'
 import cls from './AddUser.module.css'
 import Button from '../UI/Button'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import ErrorModal from '../UI/ErrorModal'
 
 const AddUser = props => {
-  const [userName, setUserName] = useState('Max')
-  const [age, setAge] = useState('')
   const [error, setError] = useState(null)
+
+  const nameInputRef = useRef()
+  const ageInputRef = useRef()
 
   const addUserHandler = (event) => {
     event.preventDefault()
 
-    if (userName.trim().length === 0 || age.trim().length === 0) {
+    const enteredName = nameInputRef.current.value
+    const enteredAge = ageInputRef.current.value
+
+    if (enteredName.trim().length === 0 || enteredAge.trim().length === 0) {
       setError({
         title: 'Invalid input',
         message: 'Please enter a valid name and age (non-empty values)'
@@ -20,7 +24,7 @@ const AddUser = props => {
       return
     }
 
-    if (parseInt(age) < 1) {
+    if (parseInt(enteredAge) < 1) {
       setError({
         title: 'Invalid age',
         message: 'Please enter a valid age (greater than zero)'
@@ -28,18 +32,9 @@ const AddUser = props => {
       return
     }
 
-    props.onAddUser(userName, age)
-
-    setUserName('')
-    setAge('')
-  }
-
-  const userNameChangeHandler = event => {
-    setUserName(event.target.value)
-  }
-
-  const ageChangeHandler = event => {
-    setAge(event.target.value)
+    props.onAddUser(enteredName, enteredAge)
+    nameInputRef.current.value = ''
+    ageInputRef.current.value = ''
   }
 
   const errorHandler = () => {
@@ -47,14 +42,14 @@ const AddUser = props => {
   }
 
   return (
-    <div>
+    <>
       {
         error
           ? <ErrorModal
-              title={error.title}
-              message={error.message}
-              onConfirm={errorHandler}
-            />
+            title={error.title}
+            message={error.message}
+            onConfirm={errorHandler}
+          />
           : null
       }
       <Card className={cls.input}>
@@ -63,22 +58,20 @@ const AddUser = props => {
           <input
             id="username"
             type="text"
-            value={userName}
-            onChange={userNameChangeHandler}
+            ref={nameInputRef}
           />
 
           <label htmlFor="age">Age (Years)</label>
           <input
             id="age"
             type="number"
-            value={age}
-            onChange={ageChangeHandler}
+            ref={ageInputRef}
           />
 
           <Button type="submit">Add user</Button>
         </form>
       </Card>
-    </div>
+    </>
   )
 }
 
