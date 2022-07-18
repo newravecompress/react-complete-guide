@@ -1,28 +1,41 @@
-import './App.css'
-import Expenses from './components/Expenses/Expenses'
-import NewExpense from './components/NewExpense/NewExpense'
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-const DUMMY_EXPENSES = [
-  { title: 'Car Insurance1', amount: 94.67, date: new Date(2022, 2, 28) },
-  { title: 'Toilet paper', amount: 6.67, date: new Date(2020, 2, 28) },
-  { title: 'Food', amount: 51.67, date: new Date(2019, 2, 28) },
-  { title: 'Bike repair', amount: 64.6, date: new Date(2019, 2, 28) },
-]
+import Login from './components/Login/Login'
+import Home from './components/Home/Home'
+import MainHeader from './components/MainHeader/MainHeader'
 
-export default function App () {
-  const [expenses, setExpenses] = useState(DUMMY_EXPENSES)
+function App () {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-  const addExpenseHandler = expense => {
-    setExpenses(prevState => {
-      return [expense, ...prevState]
-    })
+  useEffect(() => {
+    const isLogged = localStorage.getItem('isLoggedIn')
+
+    if (isLogged === '1') {
+      setIsLoggedIn(true)
+    }
+  }, [])
+
+  const loginHandler = (email, password) => {
+    // We should of course check email and password
+    // But it's just a dummy/ demo anyways
+    localStorage.setItem('isLoggedIn', '1')
+    setIsLoggedIn(true)
+  }
+
+  const logoutHandler = () => {
+    localStorage.removeItem('isLoggedIn')
+    setIsLoggedIn(false)
   }
 
   return (
-    <div className="App">
-      <NewExpense onAddExpense={addExpenseHandler} />
-      <Expenses items={expenses} />
-    </div>
+    <React.Fragment>
+      <MainHeader isAuthenticated={isLoggedIn} onLogout={logoutHandler} />
+      <main>
+        {!isLoggedIn && <Login onLogin={loginHandler} />}
+        {isLoggedIn && <Home onLogout={logoutHandler} />}
+      </main>
+    </React.Fragment>
   )
 }
+
+export default App
