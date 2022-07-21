@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer, useState } from 'react'
+import React, { useContext, useEffect, useReducer, useRef, useState } from 'react'
 
 import Card from '../UI/Card/Card'
 import classes from './Login.module.css'
@@ -48,6 +48,9 @@ const Login = (props) => {
   const { isValid: emailIsValid } = emailState
   const { isValid: passwordIsValid } = passwordState
 
+  const emailInputRef = useRef()
+  const passwordInputRef = useRef()
+
   useEffect(() => {
     const identifier = setTimeout(() => {
       setFormIsValid(emailIsValid && passwordIsValid)
@@ -76,13 +79,20 @@ const Login = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault()
-    ctx.onLogin(emailState.value, passwordState.value)
+    if (formIsValid) {
+     ctx.onLogin(emailState.value, passwordState.value)
+    } else if (!formIsValid) {
+      emailInputRef.current.focus()
+    } else {
+      passwordInputRef.current.focus()
+    }
   }
 
   return (
     <Card className={classes.login}>
       <form onSubmit={submitHandler}>
         <Input
+          ref={emailInputRef}
           isValid={emailIsValid}
           type="email"
           id="email"
@@ -93,6 +103,7 @@ const Login = (props) => {
         />
 
         <Input
+          ref={passwordInputRef}
           isValid={passwordIsValid}
           type="password"
           id="password"
@@ -105,9 +116,7 @@ const Login = (props) => {
           <Button
             type="submit"
             className={classes.btn}
-            disabled={!formIsValid}>
-            Login
-          </Button>
+          >Login</Button>
         </div>
       </form>
     </Card>
