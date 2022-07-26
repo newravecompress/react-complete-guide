@@ -1,6 +1,6 @@
-import mealsImage from '../../assets/meals.jpg'
+import mealsImage from '../../../assets/meals.jpg'
 import cls from './Header.module.css'
-import HeaderCartButton from './HeaderCartButton'
+import HeaderCartButton from '../HeaderCartButton/HeaderCartButton'
 
 const Header = props => {
   return (

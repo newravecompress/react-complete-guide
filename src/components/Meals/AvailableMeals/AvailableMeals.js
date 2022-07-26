@@ -1,6 +1,6 @@
 import cls from './AvailableMeals.module.css'
-import Card from '../UI/Card'
-import MealItem from './MealItem/MealItem'
+import Card from '../../UI/Card/Card'
+import MealItem from '../MealItem/MealItem'
 
 const DUMMY_MEALS = [
   {

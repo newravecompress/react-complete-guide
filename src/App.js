@@ -1,4 +1,4 @@
-import Header from './components/Layout/Header'
+import Header from './components/Layout/Header/Header'
 import './App.css'
 import Meals from './components/Meals/Meals'
 

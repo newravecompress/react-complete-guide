@@ -1,5 +1,5 @@
 import cls from './HeaderCartButton.module.css'
-import CartIcon from '../Cart/CartIcon'
+import CartIcon from '../../Cart/CartIcon'
 
 const HeaderCartButton = props => {
   return <button className={cls.button}>
