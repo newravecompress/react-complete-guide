@@ -29,19 +29,18 @@ const DUMMY_MEALS = [
   },
 ]
 
-const AvailableMeals = props => {
-  const mealsList = DUMMY_MEALS.map(el =>
-    <MealItem
-      key={el.id}
-      name={el.name}
-      description={el.description}
-      price={el.price}
-    />)
-
+const AvailableMeals = () => {
   return <section className={cls.meals}>
     <Card>
       <ul>
-        {mealsList}
+        {DUMMY_MEALS.map(el =>
+          <MealItem
+            key={el.id}
+            name={el.name}
+            description={el.description}
+            price={el.price}
+            id={el.id}
+          />)}
       </ul>
     </Card>
   </section>
