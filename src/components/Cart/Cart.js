@@ -9,8 +9,13 @@ const Cart = props => {
   const totalAmount = `$${ctx.totalAmount.toFixed(2)}`
   const hasItems = ctx.items.length > 0
 
-  const addHandler = () => {}
-  const removeHandler = () => {}
+  const addHandler = item => {
+    ctx.addItem({...item, amount: 1})
+  }
+
+  const removeHandler = id => {
+    ctx.removeItem(id)
+  }
 
   return <Modal onClose={props.onClose}>
     {
@@ -19,8 +24,8 @@ const Cart = props => {
           <CartItem
             key={item.id}
             {...item}
-            onRemove={removeHandler.bind(null, item.id)}
-            onAdd={addHandler.bind(null, item)}
+            onRemove={() => removeHandler(item.id)}
+            onAdd={() => addHandler(item)}
           />
         )
       }</ul>

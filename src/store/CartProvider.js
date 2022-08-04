@@ -25,7 +25,24 @@ const cartReducer = (state, action) => {
     return { items, totalAmount }
   }
 
-  return null
+  if (action.type === 'REMOVE') {
+    const index = state.items.findIndex(item => item.id === action.id)
+    const item = state.items[index]
+    const totalAmount = state.totalAmount - item.price
+
+    let items
+
+    if (item.amount === 1) {
+      items = state.items.filter(el => el.id !== action.id)
+    } else {
+      items = [...state.items]
+      items[index] = { ...item, amount: item.amount - 1 }
+    }
+
+    return {items, totalAmount}
+  }
+
+  return defaultState
 }
 
 const CartProvider = props => {
