@@ -3,7 +3,10 @@ import { useReducer } from 'react'
 
 const defaultState = {
   items: [],
-  totalAmount: 0
+  totalAmount: 0,
+  addItem: () => {},
+  removeItem: () => {},
+  clearCart: () => {},
 }
 
 const cartReducer = (state, action) => {
@@ -39,7 +42,11 @@ const cartReducer = (state, action) => {
       items[index] = { ...item, amount: item.amount - 1 }
     }
 
-    return {items, totalAmount}
+    return { items, totalAmount }
+  }
+
+  if (action.type === 'CLEAR') {
+    return defaultState
   }
 
   return defaultState
@@ -56,14 +63,17 @@ const CartProvider = props => {
     dispatch({ type: 'REMOVE', id })
   }
 
-  const cartContext = {
+  const clearCart = () => {
+    dispatch({ type: 'CLEAR' })
+  }
+
+  return <CartContext.Provider value={{
     items: state.items,
     totalAmount: state.totalAmount,
     addItem,
-    removeItem
-  }
-
-  return <CartContext.Provider value={cartContext}>
+    removeItem,
+    clearCart
+  }}>
     {props.children}
   </CartContext.Provider>
 }

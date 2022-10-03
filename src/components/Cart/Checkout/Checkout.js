@@ -20,35 +20,34 @@ const Checkout = (props) => {
   const confirmHandler = (event) => {
     event.preventDefault()
 
-    const enteredName = nameInputRef.current.value
-    const enteredStreet = streetInputRef.current.value
-    const enteredPostalCode = postalCodeInputRef.current.value
-    const enteredCity = cityInputRef.current.value
+    const name = nameInputRef.current.value
+    const street = streetInputRef.current.value
+    const postalCode = postalCodeInputRef.current.value
+    const city = cityInputRef.current.value
 
-    const enteredNameIsValid = !isEmpty(enteredName)
-    const enteredStreetIsValid = !isEmpty(enteredStreet)
-    const enteredCityIsValid = !isEmpty(enteredCity)
-    const enteredPostalCodeIsValid = isFiveChars(enteredPostalCode)
+    const nameIsValid = !isEmpty(name)
+    const streetIsValid = !isEmpty(street)
+    const cityIsValid = !isEmpty(city)
+    const postalCodeIsValid = isFiveChars(postalCode)
 
     setFormInputValidity({
-      name: enteredNameIsValid,
-      street: enteredStreetIsValid,
-      city: enteredCityIsValid,
-      postalCode: enteredPostalCodeIsValid
+      name: nameIsValid,
+      street: streetIsValid,
+      city: cityIsValid,
+      postalCode: postalCodeIsValid
     })
 
     const formIsValid =
-      enteredNameIsValid &&
-      enteredStreetIsValid &&
-      enteredPostalCodeIsValid &&
-      enteredCityIsValid
-
+      nameIsValid &&
+      streetIsValid &&
+      postalCodeIsValid &&
+      cityIsValid
 
     if (!formIsValid) {
       return
     }
 
-    // submit
+    props.onConfirm({ name, city, street, postalCode })
   }
 
   const controlClasses = input => {

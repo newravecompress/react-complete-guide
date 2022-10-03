@@ -7,6 +7,8 @@ import Checkout from './Checkout/Checkout'
 
 const Cart = props => {
   const [isCheckout, setIsCheckout] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [didSubmit, setDidSubmit] = useState(false)
   const ctx = useContext(CartContext)
   const totalAmount = `$${ctx.totalAmount.toFixed(2)}`
   const hasItems = ctx.items.length > 0
@@ -29,7 +31,26 @@ const Cart = props => {
       {hasItems && <button className={cls.button} onClick={orderHandler}>Order</button>}
     </div>
 
-  return <Modal onClose={props.onClose}>
+  const submitOrderHandler = async data => {
+    setIsSubmitting(true)
+
+    await fetch(
+      'https://react-http-89110-default-rtdb.europe-west1.firebasedatabase.app/orders.json',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          user: data,
+          items: ctx.items
+        })
+      }
+    )
+
+    setIsSubmitting(false)
+    setDidSubmit(true)
+    ctx.clearCart()
+  }
+
+  const cartModalContent = <>
     <ul className={cls['cart-items']}>{
       ctx.items.map(item =>
         <CartItem
@@ -44,8 +65,23 @@ const Cart = props => {
       <span>Total amount</span>
       <span>{totalAmount}</span>
     </div>
-    {isCheckout && <Checkout onCancel={props.onClose} />}
+    {isCheckout && <Checkout onConfirm={submitOrderHandler} onCancel={props.onClose} />}
     {!isCheckout && modalActions}
+  </>
+
+  const submittingModalContent = <p>Sending order data...</p>
+
+  const didSubmitModalContent = <>
+    <p>Successfully sent the order!</p>
+    <div className={cls.actions}>
+      <button className={cls.button} onClick={props.onClose}>Close</button>
+    </div>
+  </>
+
+  return <Modal onClose={props.onClose}>
+    {!isSubmitting && !didSubmit && cartModalContent}
+    {isSubmitting && submittingModalContent}
+    {!isSubmitting && didSubmit && didSubmitModalContent}
   </Modal>
 }
 
