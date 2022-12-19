@@ -1,7 +1,10 @@
 import { useContext, useRef, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 
 import classes from './AuthForm.module.css'
 import { AuthContext } from '../../store/auth-context'
+import { API_KEY } from '../../const'
+
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true)
@@ -9,6 +12,7 @@ const AuthForm = () => {
   const emailInputRef = useRef()
   const passwordInputRef = useRef()
   const authCtx = useContext(AuthContext)
+  const history = useHistory()
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState)
@@ -25,9 +29,9 @@ const AuthForm = () => {
     let url
 
     if (isLogin) {
-      url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCMazMQJKraXOncFFSrEtvtVpRZ1RbVXtM'
+      url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + API_KEY
     } else {
-      url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCMazMQJKraXOncFFSrEtvtVpRZ1RbVXtM'
+      url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + API_KEY
     }
 
     fetch(
@@ -56,7 +60,9 @@ const AuthForm = () => {
         }
       })
       .then(data => {
-        authCtx.login(data.idToken)
+        const expirationTime = new Date(new Date().getTime() + parseInt(data.expiresIn) * 1000)
+        authCtx.login(data.idToken, expirationTime.toISOString())
+        history.replace('/')
       })
       .catch(err => {
         alert(err.message)
