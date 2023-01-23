@@ -1,28 +1,20 @@
-import './App.css'
-import Expenses from './components/Expenses/Expenses'
-import NewExpense from './components/NewExpense/NewExpense'
-import { useState } from 'react'
+import React from 'react';
+import { Route } from 'react-router-dom';
 
-const DUMMY_EXPENSES = [
-  { title: 'Car Insurance1', amount: 94.67, date: new Date(2022, 2, 28) },
-  { title: 'Toilet paper', amount: 6.67, date: new Date(2020, 2, 28) },
-  { title: 'Food', amount: 51.67, date: new Date(2019, 2, 28) },
-  { title: 'Bike repair', amount: 64.6, date: new Date(2019, 2, 28) },
-]
+import Navigation from './components/Nav/Navigation';
+import ProductsPage from './containers/Products';
+import FavoritesPage from './containers/Favorites';
 
-export default function App () {
-  const [expenses, setExpenses] = useState(DUMMY_EXPENSES)
-
-  const addExpenseHandler = expense => {
-    setExpenses(prevState => {
-      return [expense, ...prevState]
-    })
-  }
-
+const App = props => {
   return (
-    <div className="App">
-      <NewExpense onAddExpense={addExpenseHandler} />
-      <Expenses items={expenses} />
-    </div>
-  )
-}
+    <React.Fragment>
+      <Navigation />
+      <main>
+        <Route path="/" component={ProductsPage} exact />
+        <Route path="/favorites" component={FavoritesPage} />
+      </main>
+    </React.Fragment>
+  );
+};
+
+export default App;
