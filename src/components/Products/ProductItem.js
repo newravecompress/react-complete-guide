@@ -1,12 +1,11 @@
-import React, { useContext } from 'react'
+import React from 'react'
 
 import Card from '../UI/Card'
 import './ProductItem.css'
-import { ProductsContext } from '../../context/products'
 import { useStore } from '../../hooks/store'
 
-const ProductItem = props => {
-  const [state, dispatch] = useStore()
+const ProductItem = React.memo(props => {
+  const [state, dispatch] = useStore(false)
 
   const toggleFavHandler = () => {
     dispatch('TOGGLE_FAV', props.id)
@@ -26,6 +25,6 @@ const ProductItem = props => {
       </div>
     </Card>
   )
-}
+})
 
 export default ProductItem
